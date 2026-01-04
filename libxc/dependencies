@@ -1,0 +1,3 @@
+$(LIBRARY_PATH)(nwchem_libxc_read.o):	$(INCDIR)/rtdb.fh $(INCDIR)/inp.fh $(INCDIR)/errquit.fh ../include/cdft.fh $(INCDIR)/case.fh 
+$(LIBRARY_PATH)(nwchem_libxc_util.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh ./libxc.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(nwchem_libxc_compute.o):	/home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh ../include/dft3drv.fh ../include/dft2drv.fh ../include/cdft.fh 

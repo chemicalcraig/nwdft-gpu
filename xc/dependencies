@@ -1,0 +1,107 @@
+$(LIBRARY_PATH)(xc_cr2scanl.o):	$(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_3rd_deriv.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh $(INCDIR)/errquit.fh ../include/dft3drv.fh ../include/dft2drv.fh $(INCDIR)/bgj.fh 
+$(LIBRARY_PATH)(xc_becke88.o):	./xc_becke88.F ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_hfexch.o):	../include/cdft.fh 
+$(LIBRARY_PATH)(ts_vw.o):	$(INCDIR)/stdio.fh $(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_dirac.o):	./xc_dirac.F $(INCDIR)/stdio.fh $(INCDIR)/errquit.fh ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_csogga.o):	$(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_xvs98.o):	$(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_rhogen_adft.o):	/home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh $(INCDIR)/dist.fh ../include/dftpara.fh $(INCDIR)/dft_fdist.fh 
+$(LIBRARY_PATH)(xc_xm05.o):	$(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_xmvs15.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_xmpw91.o):	./xc_xmpw91.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_pbe96.o):	./xc_pbe96.F ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_att_xc.o):	./xc_att_xc.F $(INCDIR)/stdio.fh $(INCDIR)/case.fh 
+$(LIBRARY_PATH)(xc_getv.o):	$(INCDIR)/util.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/tcgmsg.fh $(INCDIR)/sym.fh $(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh ../include/oep.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh $(INCDIR)/dftps.fh ../include/dftpara.fh ../include/cdft.fh $(INCDIR)/case.fh $(INCDIR)/bas.fh 
+$(LIBRARY_PATH)(xc_xscan.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(ts_tf.o):	$(INCDIR)/stdio.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_optc.o):	/home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh ../include/dft2drv.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(xc_camxpbe96.o):	./xc_camxpbe96.F ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_cvs98.o):	$(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(chk_dens.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_atomblock.o):	/home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh $(INCDIR)/bas.fh 
+$(LIBRARY_PATH)(xc_fd.o):	/home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_fitv.o):	/home/craig/software/nwchem-7.3.1/src/tools/install/include/tcgmsg.fh $(INCDIR)/sym.fh $(INCDIR)/rtdb.fh $(INCDIR)/msgids.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/cdft.fh $(INCDIR)/bas.fh 
+$(LIBRARY_PATH)(xc_hcth.o):	./xc_hcth.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh ../include/dft2drv.fh $(INCDIR)/case.fh ./2ndDerivB97.h 
+$(LIBRARY_PATH)(xc_xpw86.o):	./xc_xpw86.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_xn12.o):	$(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_camb88.o):	./xc_camb88.F ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_cpkzb99.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_xr2scanl.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_gill96.o):	./xc_gill96.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_s12x.o):	./xc_s12x.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_exact_pot.o):	$(INCDIR)/util.fh $(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(xc_xb86b.o):	./xc_xb86b.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_vdw_main.o):	./xc_vdw.fh $(INCDIR)/util.fh $(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/geom.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_xncap.o):	./xc_xncap.F ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_pw91lda.o):	./xc_pw91lda.F ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_perdew91.o):	./xc_perdew91.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_spbe96.o):	./xc_spbe96.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_xtpss03.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_tabcd_adft.o):	$(INCDIR)/util.fh $(INCDIR)/nwc_const.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/dist.fh ../include/dftpara.fh $(INCDIR)/dft_fdist.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_tabcd.o):	$(INCDIR)/util.fh $(INCDIR)/nwc_const.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh $(INCDIR)/dist.fh ../include/dftpara.fh $(INCDIR)/dft_fdist.fh ../include/dft2drv.fh $(INCDIR)/bas.fh 
+$(LIBRARY_PATH)(xc_eval_basis.o):	/home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh $(INCDIR)/bas.fh 
+$(LIBRARY_PATH)(xc_sic_pert.o):	$(INCDIR)/util.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/tcgmsg.fh $(INCDIR)/sym.fh $(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/cdft.fh $(INCDIR)/bas.fh 
+$(LIBRARY_PATH)(xc_ssbD_1.o):	./xc_ssbD_1.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_xm06.o):	$(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_eval_fnl.o):	$(INCDIR)/util.fh ../include/steric.fh $(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh ../include/dft3drv.fh ../include/dft2drv.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(xc_camxlsd.o):	./xc_camxlsd.F $(INCDIR)/stdio.fh $(INCDIR)/errquit.fh ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_vwn_4.o):	../include/xc_vwn_b.fh ../include/xc_vwn_a.fh ./xc_vwn_4.F 
+$(LIBRARY_PATH)(xc_sicutil.o):	$(INCDIR)/util.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(xc_vwn_1.o):	../include/xc_vwn_b.fh ../include/xc_vwn_a.fh ./xc_vwn_1.F 
+$(LIBRARY_PATH)(localize_sic.o):	$(INCDIR)/util.fh $(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(xc_cr2scan.o):	$(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_cm06.o):	$(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(hse08fx.o):	./hse08fx.F $(INCDIR)/case.fh 
+$(LIBRARY_PATH)(xc_cscanl.o):	$(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_vdw_util.o):	./xc_vdw.fh $(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(xc_perdew86.o):	./xc_perdew86.F ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_dirac_screened.o):	./xc_dirac_screened.F $(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_ft97.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_hcth_extra.o):	./xc_hcth_extra.fh 
+$(LIBRARY_PATH)(xc_tarad.o):	$(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_xpw91.o):	./xc_xpw91.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_vwn_1_rpa.o):	../include/xc_vwn_b.fh ../include/xc_vwn_a.fh ./xc_vwn_1_rpa.F 
+$(LIBRARY_PATH)(xc_cs00.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_cams12x.o):	./xc_cams12x.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_xpw6.o):	./xc_xpw6.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_replicated.o):	$(INCDIR)/util.fh $(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh $(INCDIR)/dftps.fh ../include/dftpara.fh 
+$(LIBRARY_PATH)(steric_energy.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_vdw_init.o):	./xc_vdw.fh $(INCDIR)/util_params.fh 
+$(LIBRARY_PATH)(xc_cm11.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_util.o):	$(INCDIR)/util.fh ../include/steric.fh $(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/dft2drv.fh ../include/cdft.fh $(INCDIR)/case.fh 
+$(LIBRARY_PATH)(xc_xm11.o):	$(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_xmn15.o):	$(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_op.o):	./xc_op.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_exso.o):	$(INCDIR)/util.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/tcgmsg.fh $(INCDIR)/sym.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/cdft.fh $(INCDIR)/case.fh $(INCDIR)/bas.fh 
+$(LIBRARY_PATH)(xc_xr2scan.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_getvxc.o):	$(INCDIR)/util.fh $(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(xc_cMpbe96.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_mitani.o):	$(INCDIR)/util.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_vwn_2.o):	../include/xc_vwn_b.fh ../include/xc_vwn_a.fh ./xc_vwn_2.F 
+$(LIBRARY_PATH)(xc_optx.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_chkdispauto.o):	$(INCDIR)/util.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(xc_mitani_dmr.o):	$(INCDIR)/util.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh 
+$(LIBRARY_PATH)(xc_xwpbe.o):	./xc_xwpbe.F ../include/dft3drv.fh ../include/dft2drv.fh $(INCDIR)/case.fh 
+$(LIBRARY_PATH)(xc_lb94.o):	./xc_lb94.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_xscanl.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_xmn12.o):	$(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_bc95.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_cm05.o):	$(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_lyp88.o):	./xc_lyp88.F ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_xdm.o):	$(INCDIR)/util_params.fh $(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh $(INCDIR)/msgids.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(setACmat.o):	$(INCDIR)/stdio.fh ./setACmat.F ../include/dft3drv.fh ../include/dft2drv.fh $(INCDIR)/bgj.fh 
+$(LIBRARY_PATH)(xc_vwn_3.o):	../include/xc_vwn_b.fh ../include/xc_vwn_a.fh ./xc_vwn_3.F 
+$(LIBRARY_PATH)(xc_sic.o):	$(INCDIR)/util.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/tcgmsg.fh $(INCDIR)/sym.fh $(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh ../include/cdft.fh $(INCDIR)/bas.fh 
+$(LIBRARY_PATH)(xc_kt1.o):	./xc_kt1.F ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_bnl.o):	./xc_params.fh ./xc_bnl.F $(INCDIR)/stdio.fh $(INCDIR)/errquit.fh ../include/dft3drv.fh ../include/dft2drv.fh $(INCDIR)/case.fh 
+$(LIBRARY_PATH)(xc_xpbe96.o):	./xc_xpbe96.F ../include/dft3drv.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(xc_cscan.o):	$(INCDIR)/errquit.fh ../include/dft2drv.fh 
+$(LIBRARY_PATH)(a_dist.o):	../include/cdft.fh 
+$(LIBRARY_PATH)(xc_rhogen.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh $(INCDIR)/dist.fh ../include/dftpara.fh $(INCDIR)/dft_fdist.fh 
+$(LIBRARY_PATH)(xc_signf.o):	$(INCDIR)/errquit.fh $(INCDIR)/bas.fh 
+$(LIBRARY_PATH)(xc_xsogga.o):	$(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_lebedev.o):	/home/craig/software/nwchem-7.3.1/src/tools/install/include/tcgmsg.fh $(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(xc_ctpss03.o):	../include/dft2drv.fh 
+$(LIBRARY_PATH)(ts_eval_fnl.o):	$(INCDIR)/stdio.fh ../include/dft3drv.fh ../include/dft2drv.fh ../include/cdft.fh 
+$(LIBRARY_PATH)(xc_vwn_5.o):	../include/xc_vwn_b.fh ../include/xc_vwn_a.fh ./xc_vwn_5.F 

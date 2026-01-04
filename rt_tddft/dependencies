@@ -1,0 +1,1 @@
+$(LIBRARY_PATH)(rt_tddft.o):	$(INCDIR)/util.fh $(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh $(INCDIR)/msgids.fh $(INCDIR)/matutils.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh ./headers/rt_tddft.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh ../include/cdft.fh $(INCDIR)/case.fh 

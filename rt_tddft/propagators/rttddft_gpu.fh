@@ -1,0 +1,11 @@
+C     RTTDDFT GPU interface subroutines
+      external rttddft_gpu_init
+      external rttddft_gpu_finalize
+      external rttddft_gpu_allocate
+      external rttddft_gpu_free
+      external rttddft_gpu_put
+      external rttddft_gpu_get
+      external rttddft_gpu_zero
+      external rttddft_gpu_zgemm
+      external rttddft_gpu_zaxpy
+      external rttddft_gpu_compute_fock_jk

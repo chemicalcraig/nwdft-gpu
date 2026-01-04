@@ -1,0 +1,10 @@
+$(LIBRARY_PATH)(rt_tddft_input_mocap.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(rt_tddft_input_excite.o):	$(INCDIR)/util.fh $(INCDIR)/sym.fh $(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh $(INCDIR)/rt_tddft.fh $(INCDIR)/msgids.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/geomP.fh $(INCDIR)/geom.fh $(INCDIR)/errquit.fh ../../include/cdft.fh $(INCDIR)/bas.fh 
+$(LIBRARY_PATH)(rt_tddft_input_tolerances.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(rt_tddft_input_print.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(rt_tddft_input_propagator.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(rt_tddft_input.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(rt_tddft_input_spatialcap.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(rt_tddft_input_put_defaults.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(rt_tddft_input_visualization.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(rt_tddft_input_field.o):	$(INCDIR)/stdio.fh $(INCDIR)/rtdb.fh $(INCDIR)/rt_tddft.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/inp.fh $(INCDIR)/errquit.fh 
