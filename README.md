@@ -74,13 +74,31 @@ We implemented a robust `atomicAdd_safe` wrapper. It utilizes native hardware at
 ### 5.2. Register Pressure
 By unrolling the OS recurrence loops and accumulating $J$ contributions in registers (`acc_J[3][3]`), we significantly reduced global memory traffic.
 
-## 6. Validation
+### 6. Propagator Acceleration
+The core of the RT-TDDFT propagation involves solving the Liouville-von Neumann equation. In the Magnus expansion formalism (specifically the second-order Magnus propagator), the time-evolution operator  is approximated as an exponential of the Fock matrix . The update of the density matrix  is computed using the Baker-Campbell-Hausdorff (BCH) expansion:
+
+ 
+ 
+
+This iterative expansion requires repeated dense matrix multiplications () and matrix additions (). For a system with  basis functions, each step scales as . We identified this dense linear algebra loop as the primary candidate for GPU offloading.
+
+6.1. Implementation Details
+The implementation follows a hybrid Fortran/C/CUDA architecture:
+
+CUDA/C Wrapper Layer: A C-based wrapper (rttddft_gpu.cu) interfaces directly with the NVIDIA cuBLAS library. It manages GPU memory allocation (cudaMalloc), data transfer (cudaMemcpy), and linear algebra operations (cublasZgemm, cublasZaxpy).
+Fortran Interface: A Fortran module (rttddft_gpu.fh) exposes these C functions to the legacy Fortran codebase using standard ISO C bindings or direct external linking, ensuring compatibility with NWChem's memory management.
+Propagator Refactoring: The core propagator routine prop_magnus_exp_bch.F was refactored. A conditional execution path was introduced:
+Rank 0 Offloading: The MPI rank 0 process takes ownership of the GPU. It allocates device memory and transfers the density () and Fock () matrices to the device.
+Device-Resident Loop: The iterative BCH expansion loop executes entirely on the GPU. Intermediate commutators are stored in device memory, eliminating costly PCIe transfers during the iteration.
+Synchronization: Upon convergence, the updated density matrix is copied back to the host and broadcast to all MPI ranks via Global Arrays (ga_brdcst).
+
+## 7. Validation
 The implementation was validated using:
 *   **H2 / STO-3G:** Validated (ss|ss) integrals and J-matrix construction.
 *   **CH4 / 6-31G:** Validated (sp|sp), (pp|ss), etc., ensuring correct P-orbital support.
 *   **Hybrid DFT:** Verified correct scaling and accumulation of the Exchange matrix against CPU references.
 
-## 7. Future Work
+## 8. Future Work
 *   **D/F Orbitals:** Extending the OS engine to support D and F functions.
 *   **Shared Memory Tiling:** Implementing shared memory caching for the density matrix $P$ to further reduce global memory bandwidth pressure.
 *   **Multi-GPU:** Distributing the shell quartet workload across multiple GPUs using NCCL.
