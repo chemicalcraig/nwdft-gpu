@@ -155,12 +155,14 @@ c           --- Normal Shell ---
                 current_basis_idx = current_basis_idx + 1
             elseif (type .eq. 1) then
                 current_basis_idx = current_basis_idx + 3
+            elseif (type .eq. 2) then
+                if (sphcart .eq. 1) then
+                   current_basis_idx = current_basis_idx + 5
+                else
+                   current_basis_idx = current_basis_idx + 6
+                endif
             else
-                ! Add support for D, F etc. later.
-                ! D=2 -> 6 cartesian (or 5 spherical)
-                ! Assume spherical for now? No, usually cartesian in NWChem unless specified?
-                ! Need to check `sphcart`.
-                ! For now, only supporting S and P.
+                ! Add support for F etc. later.
                 write(luout,*) 'RTTDDFT GPU: Shell type', type, 
      $               ' not supported yet'
                 call errquit('rttddft_gpu: unsupported type',0,0)

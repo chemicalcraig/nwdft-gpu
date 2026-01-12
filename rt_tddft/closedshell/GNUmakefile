@@ -23,7 +23,10 @@ LIBRARY = libnwdft.a
 
 USES_BLAS =
 
-LIB_DEFINES = -DDEBUG_PRINT -DRTTDDFT_CUDA
+LIB_DEFINES = -DDEBUG_PRINT
+ifdef RTTDDFT_CUDA
+  LIB_DEFINES += -DRTTDDFT_CUDA
+endif
 
 ##
 ## KAL: hack to allow symlinked directory

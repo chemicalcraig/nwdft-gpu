@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
 #include <cuda_runtime.h>
 #include <cublas_v2.h>
 #include <assert.h>
@@ -168,6 +170,8 @@ __device__ double compute_eri_primitive(double ai, double aj, double ak, double 
                                         double xl, double yl, double zl,
                                         int i_type, int j_type, int k_type, int l_type) {
     // Types: 0=S, 1=Px, 2=Py, 3=Pz
+    // D-shells (4-9) not yet implemented, return 0.0 safely
+    if (i_type > 3 || j_type > 3 || k_type > 3 || l_type > 3) return 0.0;
     
     double p = ai + aj;
     double q = ak + al;
@@ -442,8 +446,8 @@ __global__ void compute_JK_kernel(int nshells, Shell *shells, double *exps, doub
     Shell si = shells[ish];
     Shell sj = shells[jsh];
     
-    int num_i = (si.L == 0) ? 1 : 3;
-    int num_j = (sj.L == 0) ? 1 : 3;
+    int num_i = (si.L == 0) ? 1 : ((si.L == 1) ? 3 : 6);
+    int num_j = (sj.L == 0) ? 1 : ((sj.L == 1) ? 3 : 6);
     
     // Loop over k, l
     for (int ksh = 0; ksh < nshells; ksh++) {
@@ -451,8 +455,8 @@ __global__ void compute_JK_kernel(int nshells, Shell *shells, double *exps, doub
             Shell sk = shells[ksh];
             Shell sl = shells[lsh];
             
-            int num_k = (sk.L == 0) ? 1 : 3;
-            int num_l = (sl.L == 0) ? 1 : 3;
+            int num_k = (sk.L == 0) ? 1 : ((sk.L == 1) ? 3 : 6);
+            int num_l = (sl.L == 0) ? 1 : ((sl.L == 1) ? 3 : 6);
             
             // Loop over primitives
             // We accumulate integrals for the whole block of (i,j,k,l) components
@@ -475,10 +479,10 @@ __global__ void compute_JK_kernel(int nshells, Shell *shells, double *exps, doub
                                     for (int pk = 0; pk < sk.nprim; pk++) {
                                         for (int pl = 0; pl < sl.nprim; pl++) {
                                             
-                                            int type_i = (si.L==0) ? 0 : 1+i_c;
-                                            int type_j = (sj.L==0) ? 0 : 1+j_c;
-                                            int type_k = (sk.L==0) ? 0 : 1+k_c;
-                                            int type_l = (sl.L==0) ? 0 : 1+l_c;
+                                            int type_i = (si.L==0) ? 0 : ((si.L==1) ? 1+i_c : 4+i_c);
+                                            int type_j = (sj.L==0) ? 0 : ((sj.L==1) ? 1+j_c : 4+j_c);
+                                            int type_k = (sk.L==0) ? 0 : ((sk.L==1) ? 1+k_c : 4+k_c);
+                                            int type_l = (sl.L==0) ? 0 : ((sl.L==1) ? 1+l_c : 4+l_c);
                                             
                                             double eri = compute_eri_primitive(
                                                 exps[si.ptr_exp + pi], exps[sj.ptr_exp + pj],
@@ -648,6 +652,95 @@ void rttddft_gpu_zgemm_(char *transa, char *transb, long *m, long *n, long *k,
 void rttddft_gpu_zaxpy_(long *n, void *alpha, void **X, long *incx, void **Y, long *incy) {
     if (!is_init) rttddft_gpu_init_();
     cublasZaxpy(handle, (int)*n, (cuDoubleComplex*)alpha, (cuDoubleComplex*)*X, (int)*incx, (cuDoubleComplex*)*Y, (int)*incy);
+}
+
+void rttddft_gpu_propagate_pseries_(int *n, void *A, void *Out, int *mscale, double *tol, int *max_terms) {
+    if (!is_init) rttddft_gpu_init_();
+
+    int N = *n;
+    int m = *mscale;
+    size_t matrix_size = sizeof(cuDoubleComplex) * N * N;
+    
+    cuDoubleComplex *d_A = NULL;
+    cuDoubleComplex *d_Out = NULL;
+    cuDoubleComplex *d_Prev = NULL;
+    cuDoubleComplex *d_New = NULL;
+    cuDoubleComplex *d_Identity = NULL;
+
+    cudaMalloc(&d_A, matrix_size);
+    cudaMalloc(&d_Out, matrix_size);
+    cudaMalloc(&d_Prev, matrix_size);
+    cudaMalloc(&d_New, matrix_size);
+    cudaMalloc(&d_Identity, matrix_size);
+
+    // Copy A to d_A
+    cudaMemcpy(d_A, A, matrix_size, cudaMemcpyHostToDevice);
+
+    // Scale A: A = A / 2^m
+    double scale_factor = 1.0 / pow(2.0, (double)m);
+    cuDoubleComplex alpha_scale = make_cuDoubleComplex(scale_factor, 0.0);
+    // Treat matrix as vector for scaling
+    cublasZscal(handle, N*N, &alpha_scale, d_A, 1);
+
+    // Set Identity Matrix on Host
+    cuDoubleComplex *h_Identity = (cuDoubleComplex*)malloc(matrix_size);
+    memset(h_Identity, 0, matrix_size);
+    for(int i=0; i<N; i++) h_Identity[i*N + i] = make_cuDoubleComplex(1.0, 0.0);
+    cudaMemcpy(d_Identity, h_Identity, matrix_size, cudaMemcpyHostToDevice);
+    free(h_Identity);
+
+    // Initialize: Out = I, Prev = I
+    cudaMemcpy(d_Out, d_Identity, matrix_size, cudaMemcpyDeviceToDevice);
+    cudaMemcpy(d_Prev, d_Identity, matrix_size, cudaMemcpyDeviceToDevice);
+
+    cuDoubleComplex one = make_cuDoubleComplex(1.0, 0.0);
+    cuDoubleComplex zero = make_cuDoubleComplex(0.0, 0.0);
+
+    // Taylor Series Loop
+    for (int k = 1; k <= *max_terms; k++) {
+         double inv_k = 1.0 / (double)k;
+         cuDoubleComplex zinv_k = make_cuDoubleComplex(inv_k, 0.0);
+         
+         // New = Prev * A  => New = (1/k) * Prev * A
+         // Note: cublasZgemm(handle, transa, transb, m, n, k, alpha, A, lda, B, ldb, beta, C, ldc)
+         // C = alpha * op(A) * op(B) + beta * C
+         // We want New = zinv_k * Prev * A
+         cublasZgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N, 
+                     &zinv_k, d_Prev, N, d_A, N, &zero, d_New, N);
+         
+         // Out += New
+         cublasZaxpy(handle, N*N, &one, d_New, 1, d_Out, 1);
+
+         // Check convergence
+         double nrm;
+         cublasDznrm2(handle, N*N, d_New, 1, &nrm);
+         if (nrm < *tol) {
+              printf("RT-TDDFT GPU: Power series converged after %d terms (norm=%e)\n", k, nrm);
+              break;
+         }
+         
+         // Prev = New
+         cudaMemcpy(d_Prev, d_New, matrix_size, cudaMemcpyDeviceToDevice);
+    }
+    
+    // Squaring Loop: Out = Out * Out, m times
+    for (int i = 0; i < m; i++) {
+        // Use d_Prev as scratch
+        cublasZgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N,
+                    &one, d_Out, N, d_Out, N, &zero, d_Prev, N);
+        
+        cudaMemcpy(d_Out, d_Prev, matrix_size, cudaMemcpyDeviceToDevice);
+    }
+
+    // Copy Result Back
+    cudaMemcpy(Out, d_Out, matrix_size, cudaMemcpyDeviceToHost);
+
+    // Cleanup
+    cudaFree(d_A);
+    cudaFree(d_Out);
+    cudaFree(d_Prev);
+    cudaFree(d_New);
+    cudaFree(d_Identity);
 }
 
 }

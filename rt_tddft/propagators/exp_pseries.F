@@ -60,6 +60,11 @@ C     == Variables ==
       double precision ratio
       integer mscale            !divide A by 2^m, then square result m times
 
+#ifdef RTTDDFT_CUDA
+      external rttddft_gpu_propagate_pseries
+      integer l_a, k_a
+      integer l_out, k_out
+#endif
 
       if (params%prof) call prof_start (elapsed)
 
@@ -119,6 +124,28 @@ C
      $     call errquit (pname//"mscale exceeds 16 (2^16 = 65536)",
      $     0, 0)
 
+#ifdef RTTDDFT_CUDA
+      if (me.eq.0) then
+         if (.not. ma_push_get(mt_dcpl, n1*n1, "h_a", l_a, k_a))
+     $        call errquit(pname//"ma alloc failed", 0, MA_ERR)
+         if (.not. ma_push_get(mt_dcpl, n1*n1, "h_out", l_out, k_out))
+     $        call errquit(pname//"ma alloc failed", 0, MA_ERR)
+
+         call ga_get(g_za, 1, n1, 1, n1, dcpl_mb(k_a), n1)
+
+         call rttddft_gpu_propagate_pseries(n1, dcpl_mb(k_a), 
+     $        dcpl_mb(k_out), mscale, params%tol_series, maxk)
+
+         call ga_put(g_zexpa, 1, n1, 1, n1, dcpl_mb(k_out), n1)
+
+         if (.not. ma_pop_stack(l_out))
+     $        call errquit(pname//"ma pop failed", 0, MA_ERR)
+         if (.not. ma_pop_stack(l_a))
+     $        call errquit(pname//"ma pop failed", 0, MA_ERR)
+      endif
+      call ga_sync()
+      goto 1000
+#endif
 
       scale_val = 1d0/(2d0**mscale)
       zscale = dcmplx (scale_val, 0d0)
@@ -198,7 +225,7 @@ C
          call ga_copy (g_prev_term, g_zexpa)
       enddo
 
-      
+ 1000 continue
 C
 C     Clean up
 C
