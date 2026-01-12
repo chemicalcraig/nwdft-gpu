@@ -68,23 +68,28 @@ C     == Calculate Coulomb part of F and energy ==
       
       if (ga_nodeid().eq.0) then
          n = params%nbf_ao
-         if (.not. ma_push_get(mt_dbl, n*n, 'dens_gpu', l_p, k_p))
-     $        call errquit(pname//'ma p',0,MA_ERR)
-         if (.not. ma_push_get(mt_dbl, n*n, 'j_gpu', l_j, k_j))
-     $        call errquit(pname//'ma j',0,MA_ERR)
-
-         call ga_get(g_densre, 1, n, 1, n, dbl_mb(k_p), n)
          
-         do_k = 0
-         call rttddft_gpu_compute_fock_jk(dbl_mb(k_p), dbl_mb(k_j), 
-     $        dbl_mb(k_j), n, do_k) ! K ptr is dummy if do_k=0
-         
-         call ga_put(g_fc, 1, n, 1, n, dbl_mb(k_j), n)
+         if (params%iVcoul_opt .eq. 1) then
+             call rttddft_gpu_j_ri(g_densre, g_fc, n)
+         else
+             if (.not. ma_push_get(mt_dbl, n*n, 'dens_gpu', l_p, k_p))
+     $            call errquit(pname//'ma p',0,MA_ERR)
+             if (.not. ma_push_get(mt_dbl, n*n, 'j_gpu', l_j, k_j))
+     $            call errquit(pname//'ma j',0,MA_ERR)
 
-         if (.not. ma_pop_stack(l_j))
-     $        call errquit(pname//'pop j',0,MA_ERR)
-         if (.not. ma_pop_stack(l_p))
-     $        call errquit(pname//'pop p',0,MA_ERR)
+             call ga_get(g_densre, 1, n, 1, n, dbl_mb(k_p), n)
+         
+             do_k = 0
+             call rttddft_gpu_compute_fock_jk(dbl_mb(k_p), dbl_mb(k_j), 
+     $            dbl_mb(k_j), n, do_k) ! K ptr is dummy if do_k=0
+         
+             call ga_put(g_fc, 1, n, 1, n, dbl_mb(k_j), n)
+
+             if (.not. ma_pop_stack(l_j))
+     $            call errquit(pname//'pop j',0,MA_ERR)
+             if (.not. ma_pop_stack(l_p))
+     $            call errquit(pname//'pop p',0,MA_ERR)
+         endif
       endif
       
       ! All ranks wait for Rank 0 to update g_fc

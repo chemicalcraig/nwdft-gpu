@@ -1,4 +1,4 @@
-OBJ = exp_diag.o exp_pseries.o prop_euler.o prop_magnus_exp_bch.o prop_magnus_exp_bch_scaled.o prop_magnus_ord2_interpol.o prop_magnus_ord2_step.o prop_rk4.o rttddft_gpu.o rttddft_gpu_basis.o
+OBJ = exp_diag.o exp_pseries.o prop_euler.o prop_magnus_exp_bch.o prop_magnus_exp_bch_scaled.o prop_magnus_ord2_interpol.o prop_magnus_ord2_step.o prop_rk4.o rttddft_gpu.o rttddft_gpu_basis.o rttddft_gpu_ri.o
 
 OBJ_OPTIMIZE = 
 

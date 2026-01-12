@@ -283,6 +283,11 @@ C
 #ifdef RTTDDFT_CUDA
       call rttddft_gpu_upload_basis(params%ao_bas_han, 
      $     params%geom_active_handle)
+
+      if (params%iVcoul_opt .eq. 1) then
+         call rttddft_gpu_upload_ri(params%rtdb, params%ao_bas_han,
+     $        params%cd_bas_han)
+      endif
 #endif
 
       if (cdfit) call rt_tddft_init_coulcdfit (params)

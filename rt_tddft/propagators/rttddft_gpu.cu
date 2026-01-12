@@ -51,15 +51,15 @@ void rttddft_gpu_finalize_() {
     }
 }
 
-void rttddft_gpu_upload_basis_c_(int *nshells, int *nprim_total,
-                               double *coords, int *ang, int *nprim_per_shell,
-                               int *basis_idx,
+void rttddft_gpu_upload_basis_c_(long *nshells, long *nprim_total,
+                               double *coords, long *ang, long *nprim_per_shell,
+                               long *basis_idx,
                                double *exps, double *coefs) {
     
     if (!is_init) rttddft_gpu_init_();
 
-    n_shells_gpu = *nshells;
-    int n_prim = *nprim_total;
+    n_shells_gpu = (int)*nshells;
+    int n_prim = (int)*nprim_total;
 
     // Allocate host shell array to pack data before sending
     Shell *h_shells = (Shell*)malloc(sizeof(Shell) * n_shells_gpu);
@@ -70,12 +70,12 @@ void rttddft_gpu_upload_basis_c_(int *nshells, int *nprim_total,
         h_shells[i].x = coords[3*i + 0];
         h_shells[i].y = coords[3*i + 1];
         h_shells[i].z = coords[3*i + 2];
-        h_shells[i].L = ang[i];
-        h_shells[i].nprim = nprim_per_shell[i];
-        h_shells[i].basis_idx = basis_idx[i]; // Store global basis index
+        h_shells[i].L = (int)ang[i];
+        h_shells[i].nprim = (int)nprim_per_shell[i];
+        h_shells[i].basis_idx = (int)basis_idx[i]; // Store global basis index
         h_shells[i].ptr_exp = current_ptr;
         h_shells[i].ptr_coef = current_ptr;
-        current_ptr += nprim_per_shell[i];
+        current_ptr += (int)nprim_per_shell[i];
     }
     
     if (current_ptr != n_prim) {
@@ -446,8 +446,8 @@ __global__ void compute_JK_kernel(int nshells, Shell *shells, double *exps, doub
     Shell si = shells[ish];
     Shell sj = shells[jsh];
     
-    int num_i = (si.L == 0) ? 1 : ((si.L == 1) ? 3 : 6);
-    int num_j = (sj.L == 0) ? 1 : ((sj.L == 1) ? 3 : 6);
+    int num_i = (si.L == 0) ? 1 : ((si.L == 1) ? 3 : ((si.L == 2) ? 6 : ((si.L == 3) ? 10 : 15)));
+    int num_j = (sj.L == 0) ? 1 : ((sj.L == 1) ? 3 : ((sj.L == 2) ? 6 : ((sj.L == 3) ? 10 : 15)));
     
     // Loop over k, l
     for (int ksh = 0; ksh < nshells; ksh++) {
@@ -455,8 +455,8 @@ __global__ void compute_JK_kernel(int nshells, Shell *shells, double *exps, doub
             Shell sk = shells[ksh];
             Shell sl = shells[lsh];
             
-            int num_k = (sk.L == 0) ? 1 : ((sk.L == 1) ? 3 : 6);
-            int num_l = (sl.L == 0) ? 1 : ((sl.L == 1) ? 3 : 6);
+            int num_k = (sk.L == 0) ? 1 : ((sk.L == 1) ? 3 : ((sk.L == 2) ? 6 : ((sk.L == 3) ? 10 : 15)));
+            int num_l = (sl.L == 0) ? 1 : ((sl.L == 1) ? 3 : ((sl.L == 2) ? 6 : ((sl.L == 3) ? 10 : 15)));
             
             // Loop over primitives
             // We accumulate integrals for the whole block of (i,j,k,l) components
@@ -479,10 +479,10 @@ __global__ void compute_JK_kernel(int nshells, Shell *shells, double *exps, doub
                                     for (int pk = 0; pk < sk.nprim; pk++) {
                                         for (int pl = 0; pl < sl.nprim; pl++) {
                                             
-                                            int type_i = (si.L==0) ? 0 : ((si.L==1) ? 1+i_c : 4+i_c);
-                                            int type_j = (sj.L==0) ? 0 : ((sj.L==1) ? 1+j_c : 4+j_c);
-                                            int type_k = (sk.L==0) ? 0 : ((sk.L==1) ? 1+k_c : 4+k_c);
-                                            int type_l = (sl.L==0) ? 0 : ((sl.L==1) ? 1+l_c : 4+l_c);
+                                            int type_i = (si.L==0) ? 0 : ((si.L==1) ? 1+i_c : ((si.L==2) ? 4+i_c : ((si.L==3) ? 10+i_c : 20+i_c)));
+                                            int type_j = (sj.L==0) ? 0 : ((sj.L==1) ? 1+j_c : ((sj.L==2) ? 4+j_c : ((sj.L==3) ? 10+j_c : 20+j_c)));
+                                            int type_k = (sk.L==0) ? 0 : ((sk.L==1) ? 1+k_c : ((sk.L==2) ? 4+k_c : ((sk.L==3) ? 10+k_c : 20+k_c)));
+                                            int type_l = (sl.L==0) ? 0 : ((sl.L==1) ? 1+l_c : ((sl.L==2) ? 4+l_c : ((sl.L==3) ? 10+l_c : 20+l_c)));
                                             
                                             double eri = compute_eri_primitive(
                                                 exps[si.ptr_exp + pi], exps[sj.ptr_exp + pj],
@@ -584,7 +584,7 @@ static double *d_P_fock = NULL;
 static double *d_J_fock = NULL;
 static double *d_K_fock = NULL;
 
-extern "C" void rttddft_gpu_compute_fock_jk_(double *h_P, double *h_J, double *h_K, int *nbf, int *do_k) {
+extern "C" void rttddft_gpu_compute_fock_jk_(double *h_P, double *h_J, double *h_K, long *nbf, long *do_k) {
     size_t size = sizeof(double) * (*nbf) * (*nbf);
     
     if (!d_P_fock) cudaMalloc(&d_P_fock, size);
@@ -598,7 +598,7 @@ extern "C" void rttddft_gpu_compute_fock_jk_(double *h_P, double *h_J, double *h
     
     dim3 blocks(n_shells_gpu, n_shells_gpu);
     compute_JK_kernel<<<blocks, 1>>>(n_shells_gpu, d_shells, d_exponents, d_coefs, 
-                                     d_P_fock, d_J_fock, (*do_k ? d_K_fock : NULL), *nbf);
+                                     d_P_fock, d_J_fock, (*do_k ? d_K_fock : NULL), (int)*nbf);
     
     cudaMemcpy(h_J, d_J_fock, size, cudaMemcpyDeviceToHost);
     if (*do_k) cudaMemcpy(h_K, d_K_fock, size, cudaMemcpyDeviceToHost);
@@ -654,11 +654,11 @@ void rttddft_gpu_zaxpy_(long *n, void *alpha, void **X, long *incx, void **Y, lo
     cublasZaxpy(handle, (int)*n, (cuDoubleComplex*)alpha, (cuDoubleComplex*)*X, (int)*incx, (cuDoubleComplex*)*Y, (int)*incy);
 }
 
-void rttddft_gpu_propagate_pseries_(int *n, void *A, void *Out, int *mscale, double *tol, int *max_terms) {
+void rttddft_gpu_propagate_pseries_(long *n, void *A, void *Out, long *mscale, double *tol, long *max_terms) {
     if (!is_init) rttddft_gpu_init_();
 
-    int N = *n;
-    int m = *mscale;
+    int N = (int)*n;
+    int m = (int)*mscale;
     size_t matrix_size = sizeof(cuDoubleComplex) * N * N;
     
     cuDoubleComplex *d_A = NULL;
@@ -741,6 +741,115 @@ void rttddft_gpu_propagate_pseries_(int *n, void *A, void *Out, int *mscale, dou
     cudaFree(d_Prev);
     cudaFree(d_New);
     cudaFree(d_Identity);
+}
+
+// --- RI-J Support ---
+
+static double *d_3c_integrals = NULL;
+static double *d_inv_metric = NULL;
+static int n_aux_gpu = 0;
+static int n_ao_gpu = 0;
+
+void rttddft_gpu_upload_ri_data_(long *n_aux, long *n_ao, double *h_3c, double *h_metric) {
+    if (!is_init) rttddft_gpu_init_();
+    
+    n_aux_gpu = (int)*n_aux;
+    n_ao_gpu = (int)*n_ao;
+    size_t sz_3c = sizeof(double) * n_aux_gpu * n_ao_gpu * n_ao_gpu;
+    size_t sz_met = sizeof(double) * n_aux_gpu * n_aux_gpu;
+    
+    if (d_3c_integrals) cudaFree(d_3c_integrals);
+    if (d_inv_metric) cudaFree(d_inv_metric);
+    
+    cudaMalloc(&d_3c_integrals, sz_3c);
+    cudaMalloc(&d_inv_metric, sz_met);
+    
+    cudaMemcpy(d_3c_integrals, h_3c, sz_3c, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_inv_metric, h_metric, sz_met, cudaMemcpyHostToDevice);
+    
+    printf("RT-TDDFT GPU: Uploaded RI data (N_aux=%d, N_ao=%d)\n", n_aux_gpu, n_ao_gpu);
+}
+
+void rttddft_gpu_clean_ri_data_() {
+    if (d_3c_integrals) cudaFree(d_3c_integrals);
+    if (d_inv_metric) cudaFree(d_inv_metric);
+    d_3c_integrals = NULL;
+    d_inv_metric = NULL;
+}
+
+// Compute J = Sum_P (P|uv) * [ Sum_Q (P|Q)^-1 * (Sum_ls (Q|ls) * P_ls) ]
+// Steps:
+// 1. Fit Vector V_Q = Sum_ls (Q|ls) * P_ls
+//    This is a dot product of the Density (as vector) and the 3c tensor (as matrix [N_aux x N_ao^2])
+//    Let M_3c be [N_aux x N_ao^2]. P_vec is [N_ao^2 x 1].
+//    V_Q = M_3c * P_vec
+// 2. Coeff Vector C_P = (P|Q)^-1 * V_Q
+//    C_P = InvMetric * V_Q
+// 3. J Matrix (as vector) = Sum_P (P|uv) * C_P
+//    J_vec = M_3c^T * C_P 
+
+void rttddft_gpu_compute_j_ri_(double *h_P, double *h_J, long *n_ao) {
+    if (!is_init || !d_3c_integrals) {
+        printf("Error: GPU RI data not initialized\n");
+        return;
+    }
+    
+    int N = (int)*n_ao;
+    if (N != n_ao_gpu) {
+        printf("Error: Dimension mismatch in GPU RI (got %d, expected %d)\n", N, n_ao_gpu);
+        return;
+    }
+    
+    int N2 = N * N;
+    int Naux = n_aux_gpu;
+    
+    double *d_P = NULL;
+    double *d_J = NULL;
+    double *d_V = NULL; // Intermediate vector Q
+    double *d_C = NULL; // Fitting coefficients
+    
+    cudaMalloc(&d_P, sizeof(double) * N2);
+    cudaMalloc(&d_J, sizeof(double) * N2);
+    cudaMalloc(&d_V, sizeof(double) * Naux);
+    cudaMalloc(&d_C, sizeof(double) * Naux);
+    
+    cudaMemcpy(d_P, h_P, sizeof(double) * N2, cudaMemcpyHostToDevice);
+    
+    double alpha = 1.0;
+    double beta = 0.0;
+    
+    // 1. V_Q = M_3c * P_vec
+    // M_3c is stored as [Naux rows x N2 cols] (Row Major in C? No, cuBLAS assumes Column Major)
+    // Fortran arrays are Col Major.
+    // (P|uv): In Fortran, indices are (u,v,P) usually, or (P,u,v)?
+    // NWChem 3c integrals are often (n_ao, n_ao, n_aux).
+    // If we flatten u,v -> K, we have (K, P).
+    // So M_3c is [N2 x Naux].
+    // We want V_P = Sum_K M_KP * D_K.
+    // This is V = M^T * D.
+    // If we uploaded (n_ao, n_ao, n_aux) directly, it is effectively [N2 x Naux] in memory.
+    
+    // Operation: V = A^T * x
+    // A = d_3c_integrals [N2 rows, Naux cols]
+    // x = d_P [N2]
+    // y = d_V [Naux]
+    cublasDgemv(handle, CUBLAS_OP_T, N2, Naux, &alpha, d_3c_integrals, N2, d_P, 1, &beta, d_V, 1);
+    
+    // 2. C_P = InvMetric * V_Q
+    // InvMetric is [Naux x Naux]
+    // C = B * V
+    cublasDgemv(handle, CUBLAS_OP_N, Naux, Naux, &alpha, d_inv_metric, Naux, d_V, 1, &beta, d_C, 1);
+    
+    // 3. J_vec = M_3c * C_P
+    // J = A * C
+    cublasDgemv(handle, CUBLAS_OP_N, N2, Naux, &alpha, d_3c_integrals, N2, d_C, 1, &beta, d_J, 1);
+    
+    cudaMemcpy(h_J, d_J, sizeof(double) * N2, cudaMemcpyDeviceToHost);
+    
+    cudaFree(d_P);
+    cudaFree(d_J);
+    cudaFree(d_V);
+    cudaFree(d_C);
 }
 
 }

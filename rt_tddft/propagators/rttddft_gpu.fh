@@ -9,3 +9,8 @@ C     RTTDDFT GPU interface subroutines
       external rttddft_gpu_zgemm
       external rttddft_gpu_zaxpy
       external rttddft_gpu_compute_fock_jk
+      external rttddft_gpu_upload_ri_data
+      external rttddft_gpu_clean_ri_data
+      external rttddft_gpu_compute_j_ri
+      external rttddft_gpu_j_ri
+      external rttddft_gpu_upload_ri

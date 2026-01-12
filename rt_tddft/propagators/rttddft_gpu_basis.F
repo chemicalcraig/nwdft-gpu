@@ -161,8 +161,20 @@ c           --- Normal Shell ---
                 else
                    current_basis_idx = current_basis_idx + 6
                 endif
+            elseif (type .eq. 3) then
+                if (sphcart .eq. 1) then
+                   current_basis_idx = current_basis_idx + 7
+                else
+                   current_basis_idx = current_basis_idx + 10
+                endif
+            elseif (type .eq. 4) then
+                if (sphcart .eq. 1) then
+                   current_basis_idx = current_basis_idx + 9
+                else
+                   current_basis_idx = current_basis_idx + 15
+                endif
             else
-                ! Add support for F etc. later.
+                ! Add support for H etc. later.
                 write(luout,*) 'RTTDDFT GPU: Shell type', type, 
      $               ' not supported yet'
                 call errquit('rttddft_gpu: unsupported type',0,0)
