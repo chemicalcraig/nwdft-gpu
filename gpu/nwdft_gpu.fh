@@ -9,6 +9,7 @@ C     NWDFT GPU interface subroutines
       external nwdft_gpu_zgemm
       external nwdft_gpu_zaxpy
       external nwdft_gpu_compute_fock_jk
+      ! nwdft_gpu_compute_fock_jk(h_P, h_J, h_K, nbf, do_k, me, nproc)
       external nwdft_gpu_upload_ri_data
       external nwdft_gpu_clean_ri_data
       external nwdft_gpu_compute_j_ri

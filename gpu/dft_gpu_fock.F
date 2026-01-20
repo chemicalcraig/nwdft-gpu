@@ -12,10 +12,15 @@
       
       integer l_P, k_P, l_J, k_J, l_K, k_K
       integer size, i
-      integer me
-      integer(8) :: nbf8, do_k8
+      integer me, nproc
+      integer(8) :: nbf8, do_k8, me8, nproc8
+
+      double precision val_dbl
+      logical status_rtdb
 
       me = ga_nodeid()
+      nproc = ga_nnodes()
+
       ! Currently only replicated data strategy (each node does full calculation if it has full density?)
       ! Actually, if g_dens is distributed, we need to gather it.
       ! The GPU kernel nwdft_gpu_compute_fock_jk expects full density matrix on host.
@@ -32,6 +37,10 @@
       ! Prepare arguments for C wrapper (pass by reference)
       nbf8 = nbf
       do_k8 = 1
+      me8 = me
+      nproc8 = nproc
+
+      if (me.eq.0) write(6,*) 'DEBUG: compute_k called'
 
       ! Loop over spin channels
       ! Note: If ipol=1, g_dens is Total Density? Standard DFT: yes.
@@ -60,23 +69,10 @@
       ! For now, we only care about K as per plan.
       
       call nwdft_gpu_compute_fock_jk(dbl_mb(k_P), dbl_mb(k_J), 
-     $     dbl_mb(k_K), nbf8, do_k8)
+     $     dbl_mb(k_K), nbf8, do_k8, me8, nproc8)
       
-      ! Accumulate K back to g_fock
-      ! Note: GPU kernel computes full K matrix.
-      ! g_fock might be distributed. ga_acc handles this.
-      ! We need to ensure we don't double count if multiple nodes do this?
-      ! If we are parallel, every node doing this and accumulating is wrong.
-      ! Strategy:
-      ! 1. Only Node 0 does it and accumulates? (Bad for parallelism, but safe).
-      ! 2. All nodes do it? (Redundant work).
-      ! 3. Distributed GPU? (Requires partitioning shells).
-      ! Given "Replicated Data" GPU kernel (iterates all shells), it replicates work.
-      ! If we have 1 GPU per node, we can just let Node 0 do it for now (Phase 1).
-      
-      if (me.eq.0) then
-         call ga_acc(g_fock, 1, nbf, 1, nbf, dbl_mb(k_K), nbf, factor)
-      endif
+      ! Accumulate K back to g_fock (Collective GA operation)
+      call ga_acc(g_fock, 1, nbf, 1, nbf, dbl_mb(k_K), nbf, factor)
       
       call ga_sync()
 

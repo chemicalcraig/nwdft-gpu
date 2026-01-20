@@ -29,6 +29,8 @@
       integer me
       logical status
 
+      me = ga_nodeid()
+
       if (.not. bas_numcont(basis, nshells))
      $     call errquit('dft_gpu_upload_basis: bas_numcont',0,
      $     BASIS_ERR)
@@ -84,7 +86,7 @@ c     Second pass: Fill arrays
 
       do ishell = 1, nshells
          if (.not. bas_continfo(basis, ishell, type, nprim, ngeneral,
-     $        sphcart)) call errquit('dft_gpu: bas_continfo',0,0)
+     $        sphcart)) call errquit('dft_gpu: continfo',0,BASIS_ERR)
 
 c        Get coordinates
          if (.not. bas_cn2ce(basis, ishell, iatom))

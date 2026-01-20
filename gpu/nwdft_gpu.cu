@@ -26,6 +26,7 @@ extern "C" {
 
 void nwdft_gpu_init_() {
     if (!is_init) {
+        printf("NWDFT GPU: Initializing cuBLAS and setting stack limit...\n");
         cublasStatus_t stat = cublasCreate(&handle);
         if (stat != CUBLAS_STATUS_SUCCESS) {
             printf("CUBLAS initialization failed\n");
@@ -172,11 +173,15 @@ __device__ double nwdft_compute_eri_primitive(double ai, double aj, double ak, d
     return GET_AB_DS(u, v, 0) + CD[v]*ab_ps[u][0];
 }
 
-__global__ void nwdft_compute_K_kernel(int nshells, Shell *shells, double *exps, double *coefs, double *P, double *K, int nbf) {
+__global__ void nwdft_compute_K_kernel(int nshells, Shell *shells, double *exps, double *coefs, double *P, double *K, int nbf, int me, int nproc) {
     int ish = blockIdx.x * blockDim.x + threadIdx.x;
     int jsh = blockIdx.y * blockDim.y + threadIdx.y;
     if (ish >= nshells || jsh >= nshells) return;
     
+    // Simple workload partitioning based on shell pairs (ish, jsh)
+    int pair_idx = ish * nshells + jsh;
+    if (pair_idx % nproc != me) return;
+
     Shell si = shells[ish], sj = shells[jsh];
     int ni = (si.L==0)?1:(si.L==1)?3:(si.L==2)?6:10, nj = (sj.L==0)?1:(sj.L==1)?3:(sj.L==2)?6:10;
     
@@ -207,21 +212,37 @@ __global__ void nwdft_compute_K_kernel(int nshells, Shell *shells, double *exps,
     }
 }
 
-extern "C" void nwdft_gpu_compute_fock_jk_(double *h_P, double *h_J, double *h_K, long *nbf, long *do_k) {
+extern "C" void nwdft_gpu_compute_fock_jk_(double *h_P, double *h_J, double *h_K, long *nbf, long *do_k, long *me, long *nproc) {
+
     if (!is_init) nwdft_gpu_init_();
+
     if (n_shells_gpu == 0) return;
+
     size_t size = sizeof(double) * (*nbf) * (*nbf);
+
     double *d_P, *d_K = NULL;
+
     cudaMalloc(&d_P, size); if (*do_k) cudaMalloc(&d_K, size);
+
     cudaMemcpy(d_P, h_P, size, cudaMemcpyHostToDevice);
+
     if (*do_k) cudaMemset(d_K, 0, size);
+
     
+
     dim3 threads(8, 8);
+
     dim3 blocks((n_shells_gpu + 7)/8, (n_shells_gpu + 7)/8);
-    nwdft_compute_K_kernel<<<blocks, threads>>>(n_shells_gpu, d_shells, d_exponents, d_coefs, d_P, d_K, (int)*nbf);
+
+    
+
+    nwdft_compute_K_kernel<<<blocks, threads>>>(n_shells_gpu, d_shells, d_exponents, d_coefs, d_P, d_K, (int)*nbf, (int)*me, (int)*nproc);
+
     cudaDeviceSynchronize();
+
     if (*do_k) cudaMemcpy(h_K, d_K, size, cudaMemcpyDeviceToHost);
-    cudaFree(d_P); if (d_K) cudaFree(d_K);
+    cudaFree(d_P); 
+    if (d_K) cudaFree(d_K);
 }
 
 extern "C" {
