@@ -692,6 +692,9 @@ c
 c     == force sleazy SCF into "direct" mode ==
       call fock_force_direct(rtdb)
 
+c     == Initialize GPU basis set ==
+      call dft_gpu_upload_basis(ao_bas_han, geom)
+
       call x2czora_atguess(rtdb,geom,ao_bas_han,
      i     ipol, nbf_ao, oskel, ntotel, nclosed,
      d     do_zora, do_x2c,

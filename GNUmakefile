@@ -7,8 +7,8 @@
 
  LIB_DEFINES =
 
-   SUBDIRS = include input_dft scf_dft scf_dft_cg so_dft coulomb xc util grid dftgrad lr_tddft lr_tddft_grad zora spec rt_tddft libxc x2c
-LIB_INCLUDES = -I./include -I./grid
+   SUBDIRS = include input_dft scf_dft scf_dft_cg so_dft coulomb xc util grid dftgrad lr_tddft lr_tddft_grad zora spec rt_tddft libxc x2c gpu
+LIB_INCLUDES = -I./include -I./grid -I./gpu
 
 HEADERS = ../ddscf/cosmo.fh
 

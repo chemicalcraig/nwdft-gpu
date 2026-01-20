@@ -72,13 +72,16 @@ c
       double precision jfac(4),kfac(4)
       integer g_jk(4), g_d(4)
       logical havehfxc
-c     
-      integer  ga_create_atom_blocked
-cc AJL/Begin/FDE
-c      logical xc_gotxc
-c      external ga_create_atom_blocked,xc_gotxc
+      integer ga_create_atom_blocked
       external ga_create_atom_blocked
-cc AJL/End
+c     
+      logical xc_gotxc
+      external xc_gotxc
+c
+c     GPU Interface
+      logical dft_gpu_active
+      external dft_gpu_active
+      external dft_gpu_compute_k
 c
 c--> XC Energy
 c
@@ -245,8 +248,13 @@ c             set up prefactors
 c
 c             calculate the non-CAM exchange
               if (cam_exch) call case_setflags(.true.)
-                call fock_2e(geom, AO_bas_han, 1, jfac, kfac,
-     &             tol2e, oskel, g_dens(1), g_vxc(1), .false.)
+                if (dft_gpu_active()) then
+                   call dft_gpu_compute_k(g_dens(1), g_vxc(1), 
+     $                  nbf_ao, 1, kfac(1))
+                else
+                   call fock_2e(geom, AO_bas_han, 1, jfac, kfac,
+     &                tol2e, oskel, g_dens(1), g_vxc(1), .false.)
+                endif
               if (cam_exch)  call case_setflags(.false.) ! turn off attenuation
               Exc(1) = Exc(1)+0.5d0*ga_ddot(g_dens(1),g_vxc(1))
             endif
@@ -257,8 +265,15 @@ c             calculate the non-CAM exchange
               kfac(1)=-1.0d0*xfac(1)
               kfac(2)=-1.0d0*xfac(1)
               if (cam_exch) call case_setflags(.true.)
-              call fock_2e(geom, AO_bas_han, 2, jfac, kfac,
-     &              tol2e, oskel, g_dens, g_vxc, .false.)
+              if (dft_gpu_active()) then
+                 call dft_gpu_compute_k(g_dens(1), g_vxc(1),
+     $                nbf_ao, 1, kfac(1))
+                 call dft_gpu_compute_k(g_dens(2), g_vxc(2),
+     $                nbf_ao, 1, kfac(2))
+              else
+                 call fock_2e(geom, AO_bas_han, 2, jfac, kfac,
+     &                tol2e, oskel, g_dens, g_vxc, .false.)
+              endif
               if (cam_exch) call case_setflags(.false.) ! turn off attenuation
               Exc(1) = Exc(1)+0.5d0*(ga_ddot(g_dens(1),g_vxc(1)) +
      &              ga_ddot(g_dens(2),g_vxc(2)))
