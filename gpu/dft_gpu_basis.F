@@ -29,9 +29,6 @@
       integer me
       logical status
 
-      me = ga_nodeid()
-      if (me.ne.0) return
-
       if (.not. bas_numcont(basis, nshells))
      $     call errquit('dft_gpu_upload_basis: bas_numcont',0,
      $     BASIS_ERR)
