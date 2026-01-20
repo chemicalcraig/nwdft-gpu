@@ -21,6 +21,7 @@ C
 #include "util.fh"
 #include "rt_tddft.fh"
 #include "matutils.fh"
+#include "dft_scaleig.fh"
 
 C     == Inputs ==
       type (rt_params_t), intent(in) :: params
@@ -69,6 +70,7 @@ C
       call ga_zero (g_fockim_mo)
       call convert_z2d (g_zfock_mo, g_fockre_mo, g_fockim_mo)
 #ifdef SCALAPACK
+         call dft_utilscal(params%rtdb)
          call dft_scaleig(g_fockre_mo, g_movecs_gs, dbl_mb(ievals),
      P     params%ns_mo)
 #elif defined(PEIGS)
