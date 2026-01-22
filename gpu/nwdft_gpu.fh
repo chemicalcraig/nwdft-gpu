@@ -15,3 +15,4 @@ C     NWDFT GPU interface subroutines
       external nwdft_gpu_compute_j_ri
       external nwdft_gpu_j_ri
       external nwdft_gpu_upload_basis
+      external nwdft_gpu_test_integrals

@@ -1,15 +1,15 @@
-$(LIBRARY_PATH)(zmat_compare.o):	$(INCDIR)/util.fh ./matutils.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
-$(LIBRARY_PATH)(ga_zadd.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh 
-$(LIBRARY_PATH)(zmat_inv.o):	$(INCDIR)/stdio.fh ./matutils.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
-$(LIBRARY_PATH)(dmat_io.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh 
-$(LIBRARY_PATH)(matutils.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
-$(LIBRARY_PATH)(zmat_max_abs_elem.o):	$(INCDIR)/stdio.fh ./matutils.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
-$(LIBRARY_PATH)(calc_array_partitioning.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh 
-$(LIBRARY_PATH)(elem_compare.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh 
-$(LIBRARY_PATH)(zmat_spectral_range.o):	$(INCDIR)/stdio.fh ./matutils.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
-$(LIBRARY_PATH)(zmat_checksum.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh 
-$(LIBRARY_PATH)(pack_buffer2ga.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
-$(LIBRARY_PATH)(pack_ga2buffer.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
-$(LIBRARY_PATH)(convert_z2d.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
-$(LIBRARY_PATH)(zmat_diag.o):	$(INCDIR)/stdio.fh ./matutils.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
-$(LIBRARY_PATH)(convert_d2z.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/mafdecls.fh /home/craig/software/nwchem-7.3.1/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(zmat_compare.o):	$(INCDIR)/util.fh ./matutils.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh /home/craig/software/nwchemgpu/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(ga_zadd.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh 
+$(LIBRARY_PATH)(zmat_inv.o):	$(INCDIR)/stdio.fh ./matutils.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(dmat_io.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh /home/craig/software/nwchemgpu/src/tools/install/include/global.fh 
+$(LIBRARY_PATH)(matutils.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh /home/craig/software/nwchemgpu/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(zmat_max_abs_elem.o):	$(INCDIR)/stdio.fh ./matutils.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(calc_array_partitioning.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh /home/craig/software/nwchemgpu/src/tools/install/include/global.fh 
+$(LIBRARY_PATH)(elem_compare.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh 
+$(LIBRARY_PATH)(zmat_spectral_range.o):	$(INCDIR)/stdio.fh ./matutils.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(zmat_checksum.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh /home/craig/software/nwchemgpu/src/tools/install/include/global.fh 
+$(LIBRARY_PATH)(pack_buffer2ga.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(pack_ga2buffer.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(convert_z2d.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh /home/craig/software/nwchemgpu/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(zmat_diag.o):	$(INCDIR)/stdio.fh ./matutils.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh /home/craig/software/nwchemgpu/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 
+$(LIBRARY_PATH)(convert_d2z.o):	$(INCDIR)/stdio.fh /home/craig/software/nwchemgpu/src/tools/install/include/mafdecls.fh /home/craig/software/nwchemgpu/src/tools/install/include/global.fh $(INCDIR)/errquit.fh 

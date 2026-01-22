@@ -248,13 +248,13 @@ c             set up prefactors
 c
 c             calculate the non-CAM exchange
               if (cam_exch) call case_setflags(.true.)
-                if (dft_gpu_active()) then
-                   call dft_gpu_compute_k(g_dens(1), g_vxc(1), 
-     $                  nbf_ao, 1, kfac(1))
-                else
-                   call fock_2e(geom, AO_bas_han, 1, jfac, kfac,
+              if (dft_gpu_active()) then
+                 call dft_gpu_compute_k(g_dens(1), g_vxc(1),
+     $                nbf_ao, 1, kfac(1))
+              else
+                 call fock_2e(geom, AO_bas_han, 1, jfac, kfac,
      &                tol2e, oskel, g_dens(1), g_vxc(1), .false.)
-                endif
+              endif
               if (cam_exch)  call case_setflags(.false.) ! turn off attenuation
               Exc(1) = Exc(1)+0.5d0*ga_ddot(g_dens(1),g_vxc(1))
             endif

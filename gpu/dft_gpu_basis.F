@@ -131,7 +131,7 @@ c           2. P-component (L=1)
             nprim_per_shell(nshells_gpu) = nprim
             basis_idx(nshells_gpu) = current_basis_idx
             current_basis_idx = current_basis_idx + 3 ! P has 3 functions
-            
+
             ! Copy coords from S shell
             coords(1, nshells_gpu) = coords(1, nshells_gpu-1)
             coords(2, nshells_gpu) = coords(2, nshells_gpu-1)
@@ -180,7 +180,7 @@ c           --- Normal Shell ---
             endif
             
             ! coords already set
-            
+
             do i = 1, nprim
                exps_all(current_prim + i - 1) = buf_exps(i)
                coefs_all(current_prim + i - 1) = buf_coefs(i)
@@ -193,8 +193,23 @@ c           --- Normal Shell ---
 
       end do
 
+c     Debug: print basis info before upload
+      if (me.eq.0) then
+         write(6,*) 'FORTRAN BASIS UPLOAD DEBUG:'
+         write(6,*) 'nshells_gpu=', nshells_gpu
+         write(6,*) 'nprim_total=', nprim_total
+         write(6,*) 'All shells:'
+         j = 1
+         do i = 1, nshells_gpu
+            write(6,'(A,I3,A,I2,A,I3,A,I3)') '  Shell ', i, ': L=',
+     $           ang(i), ' nprim=', nprim_per_shell(i),
+     $           ' basis_idx=', basis_idx(i)
+            j = j + nprim_per_shell(i)
+         enddo
+      endif
+
 c     Call C wrapper
-      call nwdft_gpu_upload_basis_c(nshells_gpu, nprim_total, 
+      call nwdft_gpu_upload_basis_c(nshells_gpu, nprim_total,
      $     coords, ang, nprim_per_shell, basis_idx, exps_all, coefs_all)
 
       deallocate(ang)

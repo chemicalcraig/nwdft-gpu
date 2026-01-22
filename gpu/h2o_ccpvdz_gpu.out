@@ -1,0 +1,25 @@
+ argument  1 = h2o_ccpvdz_gpu.nw
+  Unable to open h2o_ccpvdz_gpu.nw --- appending .nw
+ ------------------------------------------------------------------------
+ nwchem: failed to open the input file                   0
+ ------------------------------------------------------------------------
+ ------------------------------------------------------------------------
+  current input line : 
+     0: 
+ ------------------------------------------------------------------------
+ ------------------------------------------------------------------------
+ There is an error in the input file
+ ------------------------------------------------------------------------
+ For more information see the NWChem manual at https://nwchemgit.github.io
+
+
+ For further details see manual section:                                                                                                                                                                                                                                                                
+0:nwchem: failed to open the input file:Received an Error in Communication
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 0 in communicator MPI COMMUNICATOR 3 DUP FROM 0
+with errorcode -1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
